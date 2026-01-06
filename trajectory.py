@@ -23,6 +23,13 @@ class Object:
 
 
 def main():
+    while True:
+        gravity = input("Enter gravitational acceleration (positive number): \n> ")
+        if not gravity.replace(".", "", 1).isdigit() or float(gravity) <= 0:
+            print("Please enter a valid positive number for gravity.")
+            continue
+        gravity = float(gravity)
+        break
     VALID_PARAMS = {"1", "2", "3", "4", "5"}
     while True:
         knowns = input(
