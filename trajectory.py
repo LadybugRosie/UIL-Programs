@@ -213,11 +213,11 @@ def main():
     print(f"vy = {v.y}")
 
     print("\nDerived parameters:")
-    print(f"Initial speed v0: {initial_speed(v)}")
-    print(f"Release angle θ (deg): {release_angle(v)}")
-    print(f"Time of flight T: {time_of_flight(v, gravity)}")
-    print(f"Horizontal range R: {horizontal_range(v, gravity)}")
-    print(f"Maximum height H: {max_height(v, gravity)}")
+    print(f"Initial speed v0: {initial_speed(v): .4f}")
+    print(f"Release angle θ (deg): {release_angle(v): .4f}")
+    print(f"Time of flight T: {time_of_flight(v, gravity): .4f}")
+    print(f"Horizontal range R: {horizontal_range(v, gravity): .4f}")
+    print(f"Maximum height H: {max_height(v, gravity): .4f}")
     print("")
 
 
