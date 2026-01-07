@@ -1,4 +1,5 @@
 import math
+import sys
 
 
 class Vec:
@@ -103,7 +104,7 @@ def solve_from_r_theta(r: float, theta: float, g: float) -> Vec:
     return Vec(vx, vy)
 
 
-def solve_from_height_theta(h: float, theta: float, g: float) -> Vec:
+def solve_from_theta_height(theta: float, h: float, g: float) -> Vec:
     theta_rad = math.radians(theta)
     vy = math.sqrt(2 * g * h)
     vx = vy / math.tan(theta_rad)
@@ -122,7 +123,7 @@ SOLVERS = {
     frozenset(("2", "5")): solve_from_t_height,
     frozenset(("3", "4")): solve_from_r_theta,
     frozenset(("3", "5")): solve_from_r_height,
-    frozenset(("4", "5")): solve_from_height_theta,
+    frozenset(("4", "5")): solve_from_theta_height,
 }
 
 # Main interaction function
@@ -170,6 +171,53 @@ def main():
 
     if solver is None:
         raise ValueError("No solver available for the given parameter combination.")
+
+    prompts = {
+        "1": "Initial speed v0 (m/s): ",
+        "2": "Time of flight T (s): ",
+        "3": "Horizontal range R (m): ",
+        "4": "Release angle θ (degrees): ",
+        "5": "Maximum height H (m): ",
+    }
+
+    def read_number(prompt, allow_zero_or_negative=False):
+        while True:
+            s = input(prompt).strip()
+            try:
+                x = float(s)
+            except ValueError:
+                print("Please enter a valid number.")
+                continue
+            if (not allow_zero_or_negative) and x <= 0:
+                print("Please enter a positive number.")
+                continue
+            return x
+
+    values = {}
+    for k in knowns:
+        # angle can be any float; the rest should be positive
+        allow_any = k == "4"
+        values[k] = read_number(prompts[k], allow_zero_or_negative=allow_any)
+
+    # Call solver in the same order as the tuple key ("1","4") -> (v0, theta), etc.
+    ordered_knowns = tuple(sorted(knowns))
+    try:
+        v = solver(values[ordered_knowns[0]], values[ordered_knowns[1]], gravity)
+    except ValueError as e:
+        print(f"Error in calculation: {e}")
+        sys.exit(1)
+
+    # Optional: compute and print all outputs
+    print("\nComputed velocity components:")
+    print(f"vx = {v.x}")
+    print(f"vy = {v.y}")
+
+    print("\nDerived parameters:")
+    print(f"Initial speed v0: {initial_speed(v)}")
+    print(f"Release angle θ (deg): {release_angle(v)}")
+    print(f"Time of flight T: {time_of_flight(v, gravity)}")
+    print(f"Horizontal range R: {horizontal_range(v, gravity)}")
+    print(f"Maximum height H: {max_height(v, gravity)}")
 
 
 if __name__ == "__main__":
