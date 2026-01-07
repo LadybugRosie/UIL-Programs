@@ -11,7 +11,6 @@ __date__ = "2025-01-06"
 
 # ==== Standard Library Imports ====
 import math
-import sys
 
 
 class Vec:
@@ -218,7 +217,7 @@ def main():
         v = solver(values[ordered_knowns[0]], values[ordered_knowns[1]], gravity)
     except ValueError as e:
         print(f"Error in calculation: {e}")
-        sys.exit(1)
+        return
 
     print("\nComputed velocity components:")
     print(f"vx = {v.x}")
