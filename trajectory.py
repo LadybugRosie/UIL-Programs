@@ -1,3 +1,15 @@
+#!/usr/bin/env python3
+"""
+trajectory.py
+A module to compute projectile motion parameters based on user input.
+Supports solving for various pairs of known parameters using kinematic equations.
+"""
+
+__author__ = "David Hovey"
+__version__ = "1.0.0"
+__date__ = "2025-01-06"
+
+# ==== Standard Library Imports ====
 import math
 import sys
 
