@@ -147,7 +147,7 @@ def main():
             "1. Initial Speed\n"
             "2. Time of Flight\n"
             "3. Horizontal Range\n"
-            "4. Release Angle\n"
+            "4. Release Angle (Degrees)\n"
             "5. Maximum Height\n"
             "> "
         ).split()
@@ -173,11 +173,11 @@ def main():
         raise ValueError("No solver available for the given parameter combination.")
 
     prompts = {
-        "1": "Initial speed v0 (m/s): ",
-        "2": "Time of flight T (s): ",
-        "3": "Horizontal range R (m): ",
+        "1": "Initial speed v0: ",
+        "2": "Time of flight T: ",
+        "3": "Horizontal range R: ",
         "4": "Release angle θ (degrees): ",
-        "5": "Maximum height H (m): ",
+        "5": "Maximum height H: ",
     }
 
     def read_number(prompt, allow_zero_or_negative=False):
@@ -194,20 +194,20 @@ def main():
             return x
 
     values = {}
-    for k in knowns:
+    ordered_knowns = tuple(sorted(knowns))
+
+    for k in ordered_knowns:
         # angle can be any float; the rest should be positive
         allow_any = k == "4"
         values[k] = read_number(prompts[k], allow_zero_or_negative=allow_any)
 
     # Call solver in the same order as the tuple key ("1","4") -> (v0, theta), etc.
-    ordered_knowns = tuple(sorted(knowns))
     try:
         v = solver(values[ordered_knowns[0]], values[ordered_knowns[1]], gravity)
     except ValueError as e:
         print(f"Error in calculation: {e}")
         sys.exit(1)
 
-    # Optional: compute and print all outputs
     print("\nComputed velocity components:")
     print(f"vx = {v.x}")
     print(f"vy = {v.y}")
@@ -218,6 +218,7 @@ def main():
     print(f"Time of flight T: {time_of_flight(v, gravity)}")
     print(f"Horizontal range R: {horizontal_range(v, gravity)}")
     print(f"Maximum height H: {max_height(v, gravity)}")
+    print("")
 
 
 if __name__ == "__main__":
