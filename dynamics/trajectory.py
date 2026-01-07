@@ -6,7 +6,7 @@ Supports solving for various pairs of known parameters using kinematic equations
 """
 
 __author__ = "David Hovey"
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 __date__ = "2025-01-06"
 
 # ==== Standard Library Imports ====
